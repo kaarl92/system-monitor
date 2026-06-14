@@ -180,9 +180,7 @@ Kein Drittanbieter-Tool nötig — Windows Task Scheduler reicht.
 CMD **als Administrator** öffnen und ausführen (Pfade anpassen):
 
 ```bat
-schtasks /create /tn "SysMonitor" ^
-  /tr "\"C:\Users\DEIN_NAME\AppData\Local\Programs\Python\Python3x\python.exe\" \"C:\Pfad\zu\system-monitor\api_server.py\"" ^
-  /sc onstart /ru SYSTEM /rl HIGHEST /f
+schtasks /create /tn "SysMonitor" /tr "C:\Users\DEIN_NAME\AppData\Local\Programs\Python\Python3x\python.exe C:\Pfad\zu\system-monitor\api_server.py" /sc onstart /ru SYSTEM /rl HIGHEST /f
 ```
 
 Damit startet der Server automatisch beim Windows-Start (auch ohne Anmeldung).
