@@ -318,6 +318,7 @@
   <!-- ── Edit toolbar ─────────────────────────────────────────────── -->
   <div class="edit-toolbar" id="edit-toolbar">
     <div class="et-info"><b id="et-count">0</b> Kacheln · Ziehen zum Sortieren · S/M/L für Größe</div>
+    <span class="et-status" id="et-status"></span>
     <div class="et-sep"></div>
     <button class="et-btn" id="et-reset">Zurücksetzen</button>
     <button class="et-btn primary" id="et-done">Fertig &amp; speichern</button>
@@ -366,11 +367,12 @@
    - Drag & Drop zum Sortieren
    - S/M/L Resize per Kachel (12-Spalten Bento-Grid)
    - Verbergen → Wiederherstellen über Chip-Drawer
-   - Persistenz lokal in localStorage (Override über Backend-Config)
+   - Persistenz serverseitig in config.json (Schlüssel "layout") via app.js.
+     Fallback auf localStorage, wenn kein Admin-Token vorhanden ist.
    ========================================================================= */
 
 (function () {
-  const LS_KEY = 'sysmon-layout-v2';
+  const LS_KEY = 'sysmon-layout-v2';   // nur noch Legacy-/Fallback-Speicher
   const CARD_IDS = [
     'cpu', 'ram', 'gpu', 'disk', 'net', 'battery',
     'gputemp', 'vram', 'psu', 'aio', 'procs', 'plugins', 'sysinfo'
@@ -403,30 +405,67 @@
   /* ─── Layout state ───────────────────────────────────────────────── */
   let layout = loadLayout();
 
+  function normaliseLayout(arr) {
+    const seen = new Set(arr.map(p => p.id));
+    for (const id of CARD_IDS) {
+      if (!seen.has(id)) arr.push({ id, w: null, h: null, hidden: false });
+    }
+    return arr.filter(p => CARD_IDS.includes(p.id));
+  }
+
   function loadLayout() {
+    // 1) Primärquelle: serverseitige Config (config.json -> "layout")
+    const cfg = window.SysMon && window.SysMon.getConfig && window.SysMon.getConfig();
+    if (cfg && Array.isArray(cfg.layout) && cfg.layout.length) {
+      return normaliseLayout(cfg.layout.map(p => ({ ...p })));
+    }
+    // 2) Fallback / Legacy-Migration: altes localStorage-Layout übernehmen
     try {
       const raw = localStorage.getItem(LS_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          // Sicherstellen, dass alle bekannten Karten enthalten sind
-          const seen = new Set(parsed.map(p => p.id));
-          for (const id of CARD_IDS) {
-            if (!seen.has(id)) parsed.push({ id, w: null, h: null, hidden: false });
-          }
-          return parsed.filter(p => CARD_IDS.includes(p.id));
-        }
+        if (Array.isArray(parsed)) return normaliseLayout(parsed);
       }
     } catch (e) {
-      console.warn('[edit] layout parse error', e);
+      console.warn('[edit] legacy layout parse error', e);
     }
-    // Default: keine Overrides — Backend bestimmt Reihenfolge/Sichtbarkeit
+    // 3) Default: keine Overrides — Backend bestimmt Reihenfolge/Sichtbarkeit
     return CARD_IDS.map(id => ({ id, w: null, h: null, hidden: false }));
   }
 
-  function saveLayout() {
+  // Schreibt das Layout in die Server-Config (config.json). Fällt bei fehlendem
+  // Admin-Token auf localStorage zurück, damit das Layout zumindest gerätelokal
+  // erhalten bleibt.
+  async function saveLayout() {
+    const cfg = window.SysMon && window.SysMon.getConfig && window.SysMon.getConfig();
+    if (cfg && window.SysMon.persistConfig) {
+      cfg.layout = layout;
+      try {
+        await window.SysMon.persistConfig();
+        try { localStorage.removeItem(LS_KEY); } catch {}
+        setStatus('✓ Layout gespeichert', 'ok');
+        return;
+      } catch (e) {
+        setStatus(
+          (e.status === 401 || e.status === 503)
+            ? 'Nur lokal — zum geräteübergreifenden Speichern im Admin (/settings) anmelden.'
+            : 'Server nicht erreichbar — nur lokal gespeichert.',
+          'warn'
+        );
+      }
+    }
     try { localStorage.setItem(LS_KEY, JSON.stringify(layout)); }
     catch (e) { console.warn('[edit] localStorage failed', e); }
+  }
+
+  let _statusTimer = null;
+  function setStatus(msg, kind) {
+    const el = document.getElementById('et-status');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'et-status' + (kind ? ' ' + kind : '');
+    if (_statusTimer) clearTimeout(_statusTimer);
+    _statusTimer = setTimeout(() => { el.textContent = ''; el.className = 'et-status'; }, 4000);
   }
 
   /* ─── Apply layout to DOM ────────────────────────────────────────── */
@@ -618,7 +657,7 @@
       resetBtn.addEventListener('click', () => {
         if (!confirm('Layout zurücksetzen? Die Backend-Konfiguration aus /settings wird wieder verwendet.')) return;
         localStorage.removeItem(LS_KEY);
-        layout = loadLayout();
+        layout = CARD_IDS.map(id => ({ id, w: null, h: null, hidden: false }));
         // data-w/data-h Attribute entfernen, display zurücksetzen
         document.querySelectorAll('.card[data-card-id]').forEach(el => {
           el.removeAttribute('data-w');
@@ -629,6 +668,10 @@
         });
         renderHiddenDrawer();
         updateEditCount();
+        // Zurücksetzen serverseitig persistieren (leeres Layout).
+        saveLayout();
+        // app.js wendet danach Reihenfolge/Sichtbarkeit aus den cards an.
+        window.SysMon && window.SysMon.applyConfig && window.SysMon.applyConfig();
       });
     }
 
@@ -639,15 +682,17 @@
       }
     });
 
-    // Layout nach app.js applyConfig anwenden (kleines Delay)
-    setTimeout(() => {
+    // Sobald app.js die Server-Config geladen hat: Layout neu einlesen + anwenden.
+    document.addEventListener('sysmon:config', () => {
+      layout = loadLayout();
       applyLayout();
-    }, 250);
+    });
 
-    // Falls Layout-Daten existieren, früh anwenden
-    if (layout.some(l => l.w != null || l.h != null || l.hidden)) {
-      applyLayout();
+    // Falls die Config schon bereit ist (z. B. Event verpasst), direkt anwenden.
+    if (window.SysMon && window.SysMon.getConfig && window.SysMon.getConfig()) {
+      layout = loadLayout();
     }
+    applyLayout();
   }
 
   if (document.readyState === 'loading') {

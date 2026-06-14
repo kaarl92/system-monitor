@@ -1000,6 +1000,18 @@ body[data-edit="1"] .edit-toolbar { display: inline-flex; }
   padding: 0 12px 0 8px;
 }
 .et-info b { color: var(--text); font-weight: 500; }
+.et-status {
+  font-size: 12px;
+  color: var(--text-2);
+  padding: 0 8px;
+  max-width: 340px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .2s ease;
+}
+.et-status.ok   { color: var(--ok); }
+.et-status.warn { color: var(--warn); }
 .et-btn {
   height: 30px; padding: 0 12px;
   display: inline-flex; align-items: center; gap: 6px;
