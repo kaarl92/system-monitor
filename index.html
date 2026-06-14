@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-edit="0">
+
+  <!-- ── Topbar ─────────────────────────────────────────────────────── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="System Monitor">
+        <rect x="3" y="4" width="18" height="12" rx="2"/>
+        <path d="M8 20h8M12 16v4"/>
+      </svg>
+      <span class="logo-text">System Monitor</span>
+    </div>
+
+    <div class="topbar-right">
+      <span class="status-dot online" title="Verbindungs­status"></span>
+      <span id="hostname" class="meta">—</span>
+      <span class="meta-divider">·</span>
+      <span id="uptime" class="meta">—</span>
+      <span class="meta-divider">·</span>
+      <span id="timestamp" class="meta">—</span>
+
+      <button class="edit-btn" id="edit-toggle" aria-label="Layout bearbeiten">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/>
+        </svg>
+        <span id="edit-label">Layout</span>
+      </button>
+
+      <a href="/settings" class="admin-link" title="Admin-Bereich" aria-label="Admin">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </a>
+      <button class="settings-btn" id="settings-btn" aria-label="Einstellungen">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <button class="theme-toggle" data-theme-toggle aria-label="Theme wechseln">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Dashboard ───────────────────────────────────────────────────── -->
+  <main class="dashboard" id="dashboard">
+
+    <!-- CPU -->
+    <div class="card" data-card-id="cpu">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S" title="Klein">S</button>
+        <button class="resize-chip" data-size="M" title="Mittel">M</button>
+        <button class="resize-chip" data-size="L" title="Groß">L</button>
+        <button class="remove-chip" data-action="hide" title="Ausblenden">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+        <span class="card-label">CPU</span>
+        <span class="card-extra" id="cpu-temp"></span>
+      </div>
+      <div class="card-row">
+        <div class="card-value" id="cpu-pct">0.0%</div>
+        <div class="spark-host" id="cpu-spark"></div>
+      </div>
+      <div class="card-sub" id="cpu-info">—</div>
+      <div class="progress-bar"><div class="progress-fill" id="cpu-bar"></div></div>
+      <div class="cpu-cores-grid" id="cpu-cores" title="Auslastung pro logischem Kern"></div>
+    </div>
+
+    <!-- RAM -->
+    <div class="card" data-card-id="ram">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2"/></svg>
+        <span class="card-label">Arbeitsspeicher</span>
+      </div>
+      <div class="card-row">
+        <div class="card-value" id="ram-pct">0.0%</div>
+        <div class="spark-host" id="ram-spark"></div>
+      </div>
+      <div class="card-sub" id="ram-info">—</div>
+      <div class="progress-bar"><div class="progress-fill" id="ram-bar"></div></div>
+      <div class="card-sub muted" id="ram-swap" style="display:none"></div>
+    </div>
+
+    <!-- Disk -->
+    <div class="card" data-card-id="disk">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span class="card-label">Festplatte</span>
+        <span class="card-extra" id="disk-io"></span>
+      </div>
+      <div id="disk-list"></div>
+      <div class="spark-host wide" id="disk-spark"></div>
+    </div>
+
+    <!-- Netzwerk -->
+    <div class="card" data-card-id="net">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+        <span class="card-label">Netzwerk</span>
+      </div>
+      <div id="net-interfaces-list"></div>
+      <div class="spark-host wide" id="net-spark"></div>
+    </div>
+
+    <!-- Akku -->
+    <div class="card" data-card-id="battery">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2"/><path d="M23 13v-2"/></svg>
+        <span class="card-label">Akku</span>
+      </div>
+      <div class="card-value" id="bat-val">—</div>
+      <div class="card-sub" id="bat-sub">—</div>
+      <div class="progress-bar"><div class="progress-fill" id="bat-bar"></div></div>
+    </div>
+
+    <!-- GPU -->
+    <div class="card" data-card-id="gpu">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M7 8v8M10 10v4M13 8v8M16 10v4"/></svg>
+        <span class="card-label">GPU Auslastung</span>
+      </div>
+      <div class="card-row">
+        <div class="card-value" id="gpu-load">—</div>
+        <div class="spark-host" id="gpu-spark"></div>
+      </div>
+      <div class="card-sub" id="gpu-name">Keine GPU erkannt</div>
+      <div class="progress-bar"><div class="progress-fill" id="gpu-bar"></div></div>
+    </div>
+
+    <!-- GPU Temp / Power -->
+    <div class="card" data-card-id="gputemp">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+        <span class="card-label">GPU Temp / Power</span>
+      </div>
+      <div class="card-value" id="gpu-temp-val">—</div>
+      <div class="card-sub" id="gpu-power">—</div>
+    </div>
+
+    <!-- VRAM -->
+    <div class="card" data-card-id="vram">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <span class="card-label">VRAM</span>
+      </div>
+      <div class="card-value" id="vram-pct">—</div>
+      <div class="card-sub" id="vram-info">—</div>
+      <div class="progress-bar"><div class="progress-fill" id="vram-bar"></div></div>
+    </div>
+
+    <!-- PSU -->
+    <div class="card" data-card-id="psu">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        <span class="card-label">Netzteil</span>
+      </div>
+      <div class="psu-top">
+        <div>
+          <div class="card-value" id="psu-total">—</div>
+          <div class="card-sub" id="psu-name">Kein PSU erkannt</div>
+        </div>
+        <div class="psu-efficiency" id="psu-efficiency-box" style="display:none">
+          <span id="psu-efficiency">—</span><span class="psu-eff-unit">% Eff.</span>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="psu-bar"></div></div>
+      <div class="psu-rails">
+        <div class="psu-rail"><span class="psu-rail-label">+12V</span><span class="psu-rail-val"><span id="psu-12v-w">—</span> W</span><span class="psu-rail-sub"><span id="psu-12v-v">—</span> V · <span id="psu-12v-a">—</span> A</span></div>
+        <div class="psu-rail"><span class="psu-rail-label">+5V</span><span class="psu-rail-val"><span id="psu-5v-w">—</span> W</span><span class="psu-rail-sub"><span id="psu-5v-v">—</span> V · <span id="psu-5v-a">—</span> A</span></div>
+        <div class="psu-rail"><span class="psu-rail-label">+3.3V</span><span class="psu-rail-val"><span id="psu-33v-w">—</span> W</span><span class="psu-rail-sub"><span id="psu-33v-v">—</span> V · <span id="psu-33v-a">—</span> A</span></div>
+        <div class="psu-rail"><span class="psu-rail-label">Eingang</span><span class="psu-rail-val"><span id="psu-input-w">—</span> W</span><span class="psu-rail-sub"><span id="psu-input-v">—</span> V</span></div>
+        <div class="psu-rail"><span class="psu-rail-label">VRM</span><span class="psu-rail-val"><span id="psu-temp-vrm">—</span> °C</span></div>
+        <div class="psu-rail"><span class="psu-rail-label">Case</span><span class="psu-rail-val"><span id="psu-temp-case">—</span> °C</span></div>
+        <div class="psu-rail"><span class="psu-rail-label">Lüfter</span><span class="psu-rail-val"><span id="psu-fan">—</span> RPM</span></div>
+      </div>
+    </div>
+
+    <!-- AIO -->
+    <div class="card" data-card-id="aio">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 6a6 6 0 0 1 6 6"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M2 12a10 10 0 0 0 10 10"/></svg>
+        <span class="card-label">AIO / Kühlung</span>
+      </div>
+      <div class="card-value" id="aio-temp">—</div>
+      <div class="card-sub" id="aio-name">Kein AIO erkannt</div>
+      <div class="aio-grid">
+        <div class="aio-item"><span class="aio-label">Pumpe</span><span id="aio-pump-rpm">—</span><span class="aio-unit">RPM</span></div>
+        <div class="aio-item"><span class="aio-label">Pumpe Duty</span><span id="aio-pump-duty">—</span><span class="aio-unit">%</span></div>
+        <div class="aio-item"><span class="aio-label">Fan 1</span><span id="aio-fan1-rpm">—</span><span class="aio-unit">RPM</span></div>
+        <div class="aio-item"><span class="aio-label">Fan 1 Duty</span><span id="aio-fan1-duty">—</span><span class="aio-unit">%</span></div>
+        <div class="aio-item"><span class="aio-label">Fan 2</span><span id="aio-fan2-rpm">—</span><span class="aio-unit">RPM</span></div>
+        <div class="aio-item"><span class="aio-label">Fan 2 Duty</span><span id="aio-fan2-duty">—</span><span class="aio-unit">%</span></div>
+      </div>
+    </div>
+
+    <!-- Top Prozesse -->
+    <div class="card" data-card-id="procs">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18"/></svg>
+        <span class="card-label">Top Prozesse (nach CPU)</span>
+      </div>
+      <table class="proc-table">
+        <thead><tr><th>Prozess</th><th>PID</th><th>CPU %</th><th>RAM (MB)</th></tr></thead>
+        <tbody id="proc-body"><tr><td colspan="4" class="proc-loading">Lade Daten…</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- Plugins -->
+    <div class="card" data-card-id="plugins">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+        <span class="card-label">Plugins</span>
+        <span class="card-extra" id="plugins-status"></span>
+      </div>
+      <div id="plugins-list" class="plugins-list">
+        <div class="plugins-empty">Keine Plugins konfiguriert.<br>
+          <a href="/settings" class="plugins-link">Unter /settings anlegen</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- System-Info -->
+    <div class="card" data-card-id="sysinfo">
+      <div class="card-edit-chrome">
+        <button class="resize-chip" data-size="S">S</button>
+        <button class="resize-chip" data-size="M">M</button>
+        <button class="resize-chip" data-size="L">L</button>
+        <button class="remove-chip" data-action="hide">×</button>
+      </div>
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span class="card-label">System</span>
+      </div>
+      <div id="system-info" class="sys-info">Lade …</div>
+    </div>
+
+  </main>
+
+  <!-- ── Hidden cards drawer (edit mode) ───────────────────────────── -->
+  <div class="hidden-drawer" id="hidden-drawer">
+    <div class="hint">Ausgeblendete Kacheln — klicken zum Wiederherstellen</div>
+  </div>
+
+  <!-- ── Edit toolbar ─────────────────────────────────────────────── -->
+  <div class="edit-toolbar" id="edit-toolbar">
+    <div class="et-info"><b id="et-count">0</b> Kacheln · Ziehen zum Sortieren · S/M/L für Größe</div>
+    <div class="et-sep"></div>
+    <button class="et-btn" id="et-reset">Zurücksetzen</button>
+    <button class="et-btn primary" id="et-done">Fertig &amp; speichern</button>
+  </div>
+
+  <!-- ── Footer ───────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <span id="refresh-note">Verbinde …</span>
+    <span class="footer-hint">v2 · Beenden: Ctrl+C im Terminal</span>
+  </footer>
+
+  <!-- ── Settings Overlay (Quick-Panel) ───────────────────────────── -->
+  <div class="settings-overlay" id="settings-overlay"></div>
+  <aside class="settings-panel" id="settings-panel" aria-hidden="true">
+    <div class="settings-header">
+      <span class="settings-title">Dashboard konfigurieren</span>
+      <button class="settings-close" id="settings-close" aria-label="Schließen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Allgemein</div>
+      <div class="settings-row">
+        <label class="settings-label" for="cfg-title">Titel</label>
+        <input class="settings-input" id="cfg-title" type="text" />
+      </div>
+      <div class="settings-row">
+        <label class="settings-label" for="cfg-refresh">Aktualisierung (ms)</label>
+        <input class="settings-input" id="cfg-refresh" type="number" min="1000" step="500" />
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Kacheln — ziehen zum Sortieren</div>
+      <ul class="settings-card-list" id="settings-card-list"></ul>
+    </div>
+    <div class="settings-footer">
+      <button class="settings-save" id="settings-save">Speichern</button>
+      <span class="settings-status" id="settings-status"></span>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+  <script>
+/* =========================================================================
+   System Monitor — Dashboard Edit Layer (v2)
+   - Drag & Drop zum Sortieren
+   - S/M/L Resize per Kachel (12-Spalten Bento-Grid)
+   - Verbergen → Wiederherstellen über Chip-Drawer
+   - Persistenz lokal in localStorage (Override über Backend-Config)
+   ========================================================================= */
+
+(function () {
+  const LS_KEY = 'sysmon-layout-v2';
+  const CARD_IDS = [
+    'cpu', 'ram', 'gpu', 'disk', 'net', 'battery',
+    'gputemp', 'vram', 'psu', 'aio', 'procs', 'plugins', 'sysinfo'
+  ];
+
+  // Per-Kachel Größen-Presets (CSS-Grid Spans)
+  const SIZE_PRESETS = {
+    cpu:     { S: { w: 3, h: 2 }, M: { w: 6, h: 2 }, L: { w: 6, h: 3 } },
+    ram:     { S: { w: 3, h: 1 }, M: { w: 3, h: 2 }, L: { w: 6, h: 2 } },
+    gpu:     { S: { w: 3, h: 1 }, M: { w: 3, h: 2 }, L: { w: 6, h: 2 } },
+    disk:    { S: { w: 3, h: 2 }, M: { w: 6, h: 2 }, L: { w: 6, h: 3 } },
+    net:     { S: { w: 3, h: 2 }, M: { w: 6, h: 2 }, L: { w: 6, h: 3 } },
+    battery: { S: { w: 3, h: 1 }, M: { w: 3, h: 2 }, L: { w: 6, h: 2 } },
+    gputemp: { S: { w: 3, h: 1 }, M: { w: 3, h: 2 }, L: { w: 6, h: 2 } },
+    vram:    { S: { w: 3, h: 1 }, M: { w: 3, h: 2 }, L: { w: 6, h: 2 } },
+    psu:     { S: { w: 3, h: 3 }, M: { w: 6, h: 3 }, L: { w: 12, h: 3 } },
+    aio:     { S: { w: 3, h: 3 }, M: { w: 6, h: 3 }, L: { w: 12, h: 3 } },
+    procs:   { S: { w: 3, h: 3 }, M: { w: 6, h: 3 }, L: { w: 6, h: 4 } },
+    plugins: { S: { w: 3, h: 2 }, M: { w: 3, h: 3 }, L: { w: 6, h: 3 } },
+    sysinfo: { S: { w: 3, h: 2 }, M: { w: 3, h: 3 }, L: { w: 6, h: 3 } },
+  };
+
+  const CARD_NAMES = {
+    cpu: 'CPU', ram: 'Arbeitsspeicher', gpu: 'GPU', disk: 'Festplatte',
+    net: 'Netzwerk', battery: 'Akku', gputemp: 'GPU Temp', vram: 'VRAM',
+    psu: 'Netzteil', aio: 'AIO', procs: 'Prozesse', plugins: 'Plugins',
+    sysinfo: 'System',
+  };
+
+  /* ─── Layout state ───────────────────────────────────────────────── */
+  let layout = loadLayout();
+
+  function loadLayout() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          // Sicherstellen, dass alle bekannten Karten enthalten sind
+          const seen = new Set(parsed.map(p => p.id));
+          for (const id of CARD_IDS) {
+            if (!seen.has(id)) parsed.push({ id, w: null, h: null, hidden: false });
+          }
+          return parsed.filter(p => CARD_IDS.includes(p.id));
+        }
+      }
+    } catch (e) {
+      console.warn('[edit] layout parse error', e);
+    }
+    // Default: keine Overrides — Backend bestimmt Reihenfolge/Sichtbarkeit
+    return CARD_IDS.map(id => ({ id, w: null, h: null, hidden: false }));
+  }
+
+  function saveLayout() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(layout)); }
+    catch (e) { console.warn('[edit] localStorage failed', e); }
+  }
+
+  /* ─── Apply layout to DOM ────────────────────────────────────────── */
+  function applyLayout() {
+    const grid = document.getElementById('dashboard');
+    if (!grid) return;
+
+    layout.forEach((item, idx) => {
+      const el = grid.querySelector(`.card[data-card-id="${item.id}"]`);
+      if (!el) return;
+
+      // Größe (nur wenn explizit gesetzt — sonst CSS-Default behalten)
+      if (item.w != null) el.setAttribute('data-w', String(item.w));
+      else el.removeAttribute('data-w');
+      if (item.h != null) el.setAttribute('data-h', String(item.h));
+      else el.removeAttribute('data-h');
+
+      // Sichtbarkeit
+      if (item.hidden) {
+        el.style.display = 'none';
+      } else if (el.style.display === 'none') {
+        // Nur überschreiben, wenn wir's verstecken — sonst app.js seinen Lauf lassen
+        el.style.display = '';
+      }
+
+      // Reihenfolge (nur wenn User Layout vom Default abweicht)
+      const userHasReordered = layout.some(l => l.w != null || l.h != null || l.hidden);
+      if (userHasReordered) {
+        el.style.order = String(idx);
+      }
+
+      // Aktiven Resize-Chip markieren
+      const preset = SIZE_PRESETS[item.id];
+      if (preset && item.w != null && item.h != null) {
+        const activeSize = Object.entries(preset)
+          .find(([, v]) => v.w === item.w && v.h === item.h)?.[0];
+        el.querySelectorAll('.resize-chip').forEach(c => {
+          c.classList.toggle('active', c.dataset.size === activeSize);
+        });
+      } else {
+        el.querySelectorAll('.resize-chip').forEach(c => c.classList.remove('active'));
+      }
+    });
+
+    renderHiddenDrawer();
+    updateEditCount();
+  }
+
+  function renderHiddenDrawer() {
+    const drawer = document.getElementById('hidden-drawer');
+    if (!drawer) return;
+    drawer.querySelectorAll('.hidden-chip').forEach(n => n.remove());
+
+    const hidden = layout.filter(l => l.hidden);
+    drawer.classList.toggle('has-items', hidden.length > 0);
+
+    for (const item of hidden) {
+      const chip = document.createElement('button');
+      chip.className = 'hidden-chip';
+      chip.type = 'button';
+      chip.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        ${CARD_NAMES[item.id] || item.id}`;
+      chip.addEventListener('click', () => {
+        item.hidden = false;
+        saveLayout();
+        applyLayout();
+      });
+      drawer.appendChild(chip);
+    }
+  }
+
+  function updateEditCount() {
+    const visibleCards = document.querySelectorAll('.card');
+    const visible = [...visibleCards].filter(el => el.style.display !== 'none').length;
+    const countEl = document.getElementById('et-count');
+    if (countEl) countEl.textContent = visible;
+  }
+
+  /* ─── Edit Mode Toggle ───────────────────────────────────────────── */
+  function setEditMode(on) {
+    document.body.dataset.edit = on ? '1' : '0';
+    const label = document.getElementById('edit-label');
+    if (label) label.textContent = on ? 'Fertig' : 'Layout';
+  }
+
+  /* ─── Drag & Drop Reorder ────────────────────────────────────────── */
+  let dragId = null;
+
+  function bindDrag(card) {
+    card.setAttribute('draggable', 'true');
+
+    card.addEventListener('dragstart', e => {
+      if (document.body.dataset.edit !== '1') {
+        e.preventDefault();
+        return;
+      }
+      dragId = card.dataset.cardId;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', dragId); } catch {}
+    });
+
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      document.querySelectorAll('.drop-target').forEach(n => n.classList.remove('drop-target'));
+      dragId = null;
+    });
+
+    card.addEventListener('dragover', e => {
+      if (document.body.dataset.edit !== '1' || !dragId) return;
+      if (card.dataset.cardId === dragId) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      card.classList.add('drop-target');
+    });
+
+    card.addEventListener('dragleave', () => card.classList.remove('drop-target'));
+
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      card.classList.remove('drop-target');
+      if (!dragId || card.dataset.cardId === dragId) return;
+
+      const fromIdx = layout.findIndex(x => x.id === dragId);
+      const toIdx = layout.findIndex(x => x.id === card.dataset.cardId);
+      if (fromIdx < 0 || toIdx < 0) return;
+
+      const [moved] = layout.splice(fromIdx, 1);
+      layout.splice(toIdx, 0, moved);
+      saveLayout();
+      applyLayout();
+    });
+  }
+
+  /* ─── Resize / Hide ──────────────────────────────────────────────── */
+  function bindChrome(card) {
+    const id = card.dataset.cardId;
+
+    card.querySelectorAll('.resize-chip').forEach(chip => {
+      chip.addEventListener('click', e => {
+        e.stopPropagation();
+        const size = chip.dataset.size;
+        const preset = SIZE_PRESETS[id];
+        if (!preset || !preset[size]) return;
+
+        const item = layout.find(x => x.id === id);
+        if (!item) return;
+
+        item.w = preset[size].w;
+        item.h = preset[size].h;
+        saveLayout();
+        applyLayout();
+      });
+    });
+
+    const removeBtn = card.querySelector('.remove-chip');
+    if (removeBtn) {
+      removeBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const item = layout.find(x => x.id === id);
+        if (!item) return;
+        item.hidden = true;
+        saveLayout();
+        applyLayout();
+      });
+    }
+  }
+
+  /* ─── Init ───────────────────────────────────────────────────────── */
+  function init() {
+    document.querySelectorAll('.card[data-card-id]').forEach(card => {
+      bindDrag(card);
+      bindChrome(card);
+    });
+
+    const editBtn = document.getElementById('edit-toggle');
+    if (editBtn) {
+      editBtn.addEventListener('click', () => {
+        setEditMode(document.body.dataset.edit !== '1');
+      });
+    }
+
+    const doneBtn = document.getElementById('et-done');
+    if (doneBtn) doneBtn.addEventListener('click', () => setEditMode(false));
+
+    const resetBtn = document.getElementById('et-reset');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (!confirm('Layout zurücksetzen? Die Backend-Konfiguration aus /settings wird wieder verwendet.')) return;
+        localStorage.removeItem(LS_KEY);
+        layout = loadLayout();
+        // data-w/data-h Attribute entfernen, display zurücksetzen
+        document.querySelectorAll('.card[data-card-id]').forEach(el => {
+          el.removeAttribute('data-w');
+          el.removeAttribute('data-h');
+          el.style.display = '';
+          el.style.order = '';
+          el.querySelectorAll('.resize-chip').forEach(c => c.classList.remove('active'));
+        });
+        renderHiddenDrawer();
+        updateEditCount();
+      });
+    }
+
+    // ESC zum Beenden
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.body.dataset.edit === '1') {
+        setEditMode(false);
+      }
+    });
+
+    // Layout nach app.js applyConfig anwenden (kleines Delay)
+    setTimeout(() => {
+      applyLayout();
+    }, 250);
+
+    // Falls Layout-Daten existieren, früh anwenden
+    if (layout.some(l => l.w != null || l.h != null || l.hidden)) {
+      applyLayout();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+</script>
+</body>
+</html>

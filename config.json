@@ -1,0 +1,121 @@
+{
+  "title": "System Monitor",
+  "refresh_ms": 3000,
+  "history_seconds": 300,
+  "psu_max_watts": 1000,
+  "cards": [
+    {
+      "id": "cpu",
+      "label": "CPU",
+      "enabled": true,
+      "order": 0
+    },
+    {
+      "id": "ram",
+      "label": "Arbeitsspeicher",
+      "enabled": true,
+      "order": 1
+    },
+    {
+      "id": "disk",
+      "label": "Festplatte",
+      "enabled": true,
+      "order": 2
+    },
+    {
+      "id": "net",
+      "label": "Netzwerk",
+      "enabled": true,
+      "order": 3
+    },
+    {
+      "id": "gpu",
+      "label": "GPU Auslastung",
+      "enabled": true,
+      "order": 4
+    },
+    {
+      "id": "gputemp",
+      "label": "GPU Temp / Power",
+      "enabled": true,
+      "order": 5
+    },
+    {
+      "id": "vram",
+      "label": "VRAM",
+      "enabled": true,
+      "order": 6
+    },
+    {
+      "id": "psu",
+      "label": "Netzteil",
+      "enabled": true,
+      "order": 7
+    },
+    {
+      "id": "procs",
+      "label": "Top Prozesse",
+      "enabled": true,
+      "order": 8
+    },
+    {
+      "id": "sysinfo",
+      "label": "System-Info",
+      "enabled": true,
+      "order": 9
+    },
+    {
+      "id": "plugins",
+      "label": "Plugins",
+      "enabled": true,
+      "order": 10
+    }
+  ],
+  "network_filter": [],
+  "disk_filter": [],
+  "enable_liquidctl_psu": true,
+  "enable_liquidctl_aio": false,
+  "liquidctl_psu_interval_s": 30,
+  "liquidctl_aio_interval_s": 120,
+  "plugins": [
+    {
+      "id": "plugin_tqhdifn",
+      "label": "arp -a",
+      "type": "shell",
+      "icon": "terminal",
+      "command": "arp -a",
+      "interval_s": 15.0
+    },
+    {
+      "id": "plugin_g63pnjc",
+      "label": "Uptimer",
+      "type": "http",
+      "icon": "terminal",
+      "interval_s": 15.0,
+      "url": "https://uptimer.sskm.dev/status/main"
+    }
+  ],
+  "thresholds": {
+    "cpu": {
+      "warn": 70,
+      "danger": 90
+    },
+    "ram": {
+      "warn": 75,
+      "danger": 92
+    },
+    "disk": {
+      "warn": 80,
+      "danger": 95
+    },
+    "cpu_temp": {
+      "warn": 75,
+      "danger": 90
+    },
+    "gpu_temp": {
+      "warn": 78,
+      "danger": 90
+    }
+  },
+  "auth_token": "t"
+}

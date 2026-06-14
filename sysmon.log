@@ -1,0 +1,442 @@
+ 
+C:\Users\sm\Downloads\Testdesign\api_server.py:844: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+C:\Users\sm\Downloads\Testdesign\api_server.py:853: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 167, in __call__
+    await send({"type": "http.response.body", "body": self.body})
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 161, in _send
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 506, in send
+    output = self.conn.send(event=h11.Data(data=data))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 571, in send_with_data_passthrough
+    writer(event, data_list.append)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 65, in __call__
+    self.send_data(event.data, write)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 91, in send_data
+    raise LocalProtocolError("Too much data for declared Content-Length")
+h11._util.LocalProtocolError: Too much data for declared Content-Length
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 167, in __call__
+    await send({"type": "http.response.body", "body": self.body})
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 161, in _send
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 506, in send
+    output = self.conn.send(event=h11.Data(data=data))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 571, in send_with_data_passthrough
+    writer(event, data_list.append)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 65, in __call__
+    self.send_data(event.data, write)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 91, in send_data
+    raise LocalProtocolError("Too much data for declared Content-Length")
+h11._util.LocalProtocolError: Too much data for declared Content-Length
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 167, in __call__
+    await send({"type": "http.response.body", "body": self.body})
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 161, in _send
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 506, in send
+    output = self.conn.send(event=h11.Data(data=data))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 571, in send_with_data_passthrough
+    writer(event, data_list.append)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 65, in __call__
+    self.send_data(event.data, write)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 91, in send_data
+    raise LocalProtocolError("Too much data for declared Content-Length")
+h11._util.LocalProtocolError: Too much data for declared Content-Length
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 167, in __call__
+    await send({"type": "http.response.body", "body": self.body})
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 161, in _send
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 506, in send
+    output = self.conn.send(event=h11.Data(data=data))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 571, in send_with_data_passthrough
+    writer(event, data_list.append)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 65, in __call__
+    self.send_data(event.data, write)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 91, in send_data
+    raise LocalProtocolError("Too much data for declared Content-Length")
+h11._util.LocalProtocolError: Too much data for declared Content-Length
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 167, in __call__
+    await send({"type": "http.response.body", "body": self.body})
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 161, in _send
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 506, in send
+    output = self.conn.send(event=h11.Data(data=data))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 571, in send_with_data_passthrough
+    writer(event, data_list.append)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 65, in __call__
+    self.send_data(event.data, write)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 91, in send_data
+    raise LocalProtocolError("Too much data for declared Content-Length")
+h11._util.LocalProtocolError: Too much data for declared Content-Length
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 167, in __call__
+    await send({"type": "http.response.body", "body": self.body})
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 161, in _send
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 506, in send
+    output = self.conn.send(event=h11.Data(data=data))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 571, in send_with_data_passthrough
+    writer(event, data_list.append)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 65, in __call__
+    self.send_data(event.data, write)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 91, in send_data
+    raise LocalProtocolError("Too much data for declared Content-Length")
+h11._util.LocalProtocolError: Too much data for declared Content-Length
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 167, in __call__
+    await send({"type": "http.response.body", "body": self.body})
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 161, in _send
+    await send(message)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 506, in send
+    output = self.conn.send(event=h11.Data(data=data))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_connection.py", line 571, in send_with_data_passthrough
+    writer(event, data_list.append)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 65, in __call__
+    self.send_data(event.data, write)
+  File "C:\Users\sm\AppData\Local\Programs\Python\Python312\Lib\site-packages\h11\_writers.py", line 91, in send_data
+    raise LocalProtocolError("Too much data for declared Content-Length")
+h11._util.LocalProtocolError: Too much data for declared Content-Length

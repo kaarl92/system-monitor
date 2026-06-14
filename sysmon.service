@@ -1,0 +1,42 @@
+# ============================================================
+# systemd Unit für System Monitor
+# Kopieren nach: /etc/systemd/system/sysmon.service
+# Aktivieren:    systemctl enable --now sysmon
+# ============================================================
+
+[Unit]
+Description=System Monitor – FastAPI/psutil Statusseite
+After=network.target
+
+[Service]
+Type=simple
+# Pfad anpassen falls abweichend!
+WorkingDirectory=/opt/sysmonitor
+ExecStart=/opt/sysmonitor/.venv/bin/python3 /opt/sysmonitor/api_server.py
+
+# Eigenen Service-User empfehlen — sysmon NICHT als root laufen lassen:
+#   useradd --system --home /opt/sysmonitor --shell /usr/sbin/nologin sysmon
+#   chown -R sysmon:sysmon /opt/sysmonitor
+User=sysmon
+Group=sysmon
+
+# Bind-Adresse / Port via Environment (Default in api_server.py: 127.0.0.1:10800)
+# Für LAN-Zugriff: Environment=SYSMON_HOST=0.0.0.0
+Environment=SYSMON_HOST=127.0.0.1
+Environment=SYSMON_PORT=10800
+
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sysmon
+
+# Sicherheitshärtung — standardmäßig aktiv.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/sysmonitor
+
+[Install]
+WantedBy=multi-user.target
