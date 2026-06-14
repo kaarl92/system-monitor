@@ -78,7 +78,7 @@ echo.
 if /i "%SYSMON_HOST%"=="127.0.0.1" set "OPEN_URL=http://localhost:%PORT%"
 if not defined OPEN_URL set "OPEN_URL=http://%SYSMON_HOST%:%PORT%"
 echo      Oeffne Browser: %OPEN_URL%
-start "" "%OPEN_URL%"
+REM start "" "%OPEN_URL%"
 echo.
 echo [INFO] Zum Stoppen: %~nx0 stop
 goto :eof
