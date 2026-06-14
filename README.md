@@ -174,16 +174,31 @@ Logs: `journalctl -u sysmon -f`.
 
 ---
 
-## Als Windows-Dienst (autostart)
+## Als Windows-Autostart (Task Scheduler)
 
-Mit **NSSM** (Non-Sucking Service Manager, <https://nssm.cc>) als
-Alternative zu `start.bat`:
+Kein Drittanbieter-Tool nötig — Windows Task Scheduler reicht.
+CMD **als Administrator** öffnen und ausführen (Pfade anpassen):
 
 ```bat
-nssm install SysMonitor "C:\Python3x\python.exe" "C:\Pfad\zu\api_server.py"
-nssm set SysMonitor AppDirectory "C:\Pfad\zu\sysmonitor"
-nssm set SysMonitor AppEnvironmentExtra "SYSMON_HOST=127.0.0.1" "SYSMON_PORT=10800"
-nssm start SysMonitor
+schtasks /create /tn "SysMonitor" ^
+  /tr "\"C:\Users\DEIN_NAME\AppData\Local\Programs\Python\Python3x\python.exe\" \"C:\Pfad\zu\system-monitor\api_server.py\"" ^
+  /sc onstart /ru SYSTEM /rl HIGHEST /f
+```
+
+Damit startet der Server automatisch beim Windows-Start (auch ohne Anmeldung).
+
+**Verwalten:**
+```bat
+schtasks /run /tn "SysMonitor"       :: manuell starten
+schtasks /end /tn "SysMonitor"       :: stoppen
+schtasks /delete /tn "SysMonitor" /f :: entfernen
+schtasks /query /tn "SysMonitor"     :: Status prüfen
+```
+
+**Umgebungsvariablen** (z.B. für LAN-Zugriff) einmalig als Admin setzen:
+```bat
+setx SYSMON_HOST 0.0.0.0 /m
+setx SYSMON_PORT 10800 /m
 ```
 
 ---
