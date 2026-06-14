@@ -111,6 +111,9 @@ def _config_defaults() -> Dict[str, Any]:
         "refresh_ms": 3000,
         "auth_token": "",
         "cards": [],
+        # Dashboard-Layout aus dem Edit-Modus (Größe/Reihenfolge/Sichtbarkeit
+        # der Kacheln). Wird vom Frontend befüllt; leer = Defaults aus "cards".
+        "layout": [],
         "network_filter": [],
         "disk_filter": [],
         "plugins": [],

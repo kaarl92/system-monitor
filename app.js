@@ -577,6 +577,8 @@ async function loadConfig() {
     State.config = { title: 'System Monitor', refresh_ms: 3000, cards: [] };
   }
   applyConfig();
+  // Edit-Layer (index.html) signalisieren, dass die Config bereit ist.
+  document.dispatchEvent(new CustomEvent('sysmon:config'));
 }
 
 async function loadSystemInfo() {
@@ -647,6 +649,27 @@ function closeSettings() {
   $('settings-overlay')?.classList.remove('open');
 }
 
+// Schreibt die aktuelle State.config ins Backend (config.json).
+// Sendet den Admin-Token mit — sonst lehnt das Backend (X-Auth-Token) ab.
+async function persistConfig() {
+  const token = getAdminToken();
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['X-Auth-Token'] = token;
+  const res = await fetch(`${API_BASE}/api/config`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(State.config),
+  });
+  if (!res.ok) {
+    let detail = `HTTP ${res.status}`;
+    try { const j = await res.json(); detail = j.error || j.detail || detail; } catch {}
+    const err = new Error(detail);
+    err.status = res.status;
+    throw err;
+  }
+  return res.json();
+}
+
 async function saveSettings() {
   if (!State.config) return;
   State.config.title      = $('cfg-title')?.value   || State.config.title;
@@ -665,12 +688,7 @@ async function saveSettings() {
 
   const status = $('settings-status');
   try {
-    const res = await fetch(`${API_BASE}/api/config`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(State.config),
-    });
-    const data = await res.json();
+    const data = await persistConfig();
     if (data.ok) {
       if (status) { status.textContent = '✓ Gespeichert'; setTimeout(() => status.textContent = '', 1800); }
       applyConfig();
@@ -679,7 +697,11 @@ async function saveSettings() {
       status.textContent = data.error || 'Fehler beim Speichern.';
     }
   } catch (e) {
-    if (status) status.textContent = 'Server nicht erreichbar.';
+    if (status) {
+      status.textContent = e.status === 401 || e.status === 503
+        ? 'Nicht angemeldet — bitte im Admin-Bereich (/settings) anmelden.'
+        : 'Server nicht erreichbar.';
+    }
   }
 }
 
@@ -710,6 +732,16 @@ document.addEventListener('DOMContentLoaded', () => {
   $('settings-overlay')?.addEventListener('click', closeSettings);
   $('settings-save')   ?.addEventListener('click', saveSettings);
 });
+
+// Schnittstelle für den Edit-Layer (Inline-Script in index.html):
+// dieser liest/schreibt das Layout (Größe, Reihenfolge, Sichtbarkeit) jetzt
+// serverseitig in config.json statt im localStorage.
+window.SysMon = {
+  getConfig: () => State.config,
+  persistConfig,
+  applyConfig,
+  getAdminToken,
+};
 
 loadConfig();
 loadSystemInfo();
