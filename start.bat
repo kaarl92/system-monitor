@@ -8,7 +8,7 @@ setlocal EnableDelayedExpansion
 
 set "SCRIPT_DIR=%~dp0"
 if "%SYSMON_PORT%"==""  set "SYSMON_PORT=10800"
-if "%SYSMON_HOST%"==""  set "SYSMON_HOST=127.0.0.1"
+if "%SYSMON_HOST%"==""  set "SYSMON_HOST=0.0.0.0"
 set "PORT=%SYSMON_PORT%"
 set "LOG_FILE=%SCRIPT_DIR%sysmon.log"
 
